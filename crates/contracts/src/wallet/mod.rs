@@ -22,7 +22,6 @@ use tlb_ton::{
     state_init::StateInit,
     MsgAddress,
 };
-use v5r1::V5R1;
 
 pub const DEFAULT_WALLET_ID: u32 = 0x29a9a317;
 
@@ -83,17 +82,8 @@ where
 
     /// Shortcut for [`Wallet::derive()`] with default workchain and wallet id
     #[inline]
-    pub fn derive_default(keypair: KeyPair) -> Result<Self, CellBuilderError>
-    where
-        V: 'static + WalletVersion,
-    {
-        // Use the specific default wallet_id for V5R1
-        let wallet_id = if std::any::TypeId::of::<V>() == std::any::TypeId::of::<V5R1>() {
-            0x7FFFFF11
-        } else {
-            DEFAULT_WALLET_ID
-        };
-        Self::derive(0, keypair, wallet_id)
+    pub fn derive_default(keypair: KeyPair) -> Result<Self, CellBuilderError> {
+        Self::derive(0, keypair, DEFAULT_WALLET_ID)
     }
 
     /// Address of the wallet
